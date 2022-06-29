@@ -49,7 +49,7 @@ public class App extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(new EventoEntrada()); // gerenciador de eventos
 
 		// inicializa elementos do cenario
-		level = new Fase("scenarios/cenario_01.tmj","imgs/");	
+		level = new Fase("imgs/cenario_01.tmj","imgs/");	
 		
 		ESTADO = EstadoJogo.EXECUTANDO;
 	}
