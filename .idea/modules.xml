@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tileset_mecanica_libGDX.iml" filepath="$PROJECT_DIR$/.idea/modules/tileset_mecanica_libGDX.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.iml" filepath="$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.iml" />
+    </modules>
+  </component>
+</project>

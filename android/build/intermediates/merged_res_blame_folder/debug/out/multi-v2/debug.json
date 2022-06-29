@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/algoldev/Desktop/CÓDIGOS/tileset_mecanica_libGDX/android/build/intermediates/res/merged/debug/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/home/algoldev/Desktop/CÓDIGOS/tileset_mecanica_libGDX/android/res/values/color.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                },
+                {
+                    "source": "/home/algoldev/Desktop/CÓDIGOS/tileset_mecanica_libGDX/android/res/values/strings.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "56",
+                        "endColumns": "47",
+                        "endOffsets": "99"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "111",
+                        "endColumns": "47",
+                        "endOffsets": "154"
+                    }
+                }
+            ]
+        }
+    ]
+}
