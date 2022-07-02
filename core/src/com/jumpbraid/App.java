@@ -7,12 +7,17 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Config;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jumpbraid.engine.game.EstadoJogo;
-import com.jumpbraid.engine.scene.Level;
+import com.jumpbraid.engine.person.Person;
+import com.jumpbraid.engine.scene.SceneManager;
+import com.jumpbraid.engine.scene.tile.TileLevel;
 import com.jumpbraid.engine.utils.Recursos;
 import com.jumpbraid.game.Fase;
+import com.jumpbraid.game.Personagem;
 
 public class App extends ApplicationAdapter {
 	public static final int LARGURA_TELA = 426;
@@ -23,23 +28,19 @@ public class App extends ApplicationAdapter {
     public FitViewport m_viewport;
 	SpriteBatch batch;
 	public boolean k_touch;
-
-	protected EstadoJogo ESTADO;
-    private long quadroAtual;
     private int interval = 17;
 	
 	
-	// elementos do cenario
-	Level level;
+	// elementos da cena
 	Texture t1;
+	Person person;
+	SceneManager sceneManager;
 	
 	@Override
 	public void create () {
-		ESTADO = EstadoJogo.INICIANDO;
 		Recursos.getInstance().initRecursos(LARGURA_TELA,ALTURA_TELA);
-		quadroAtual = 0;
-		
-		t1 = new Texture("imgs/teste.png");
+		person = new Personagem();
+		sceneManager = new SceneManager(person);
 
 		camera = new OrthographicCamera();
         camera.setToOrtho(true,LARGURA_TELA,ALTURA_TELA);
@@ -47,21 +48,15 @@ public class App extends ApplicationAdapter {
 		m_viewport = new FitViewport(LARGURA_TELA, ALTURA_TELA,camera);
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(new EventoEntrada()); // gerenciador de eventos
-
-		// inicializa elementos do cenario
-		level = new Fase("imgs/cenario_01.tmj","imgs/");	
-		
-		ESTADO = EstadoJogo.EXECUTANDO;
 	}
 
 	@Override
 	public void render () {
 		// gerencia os eventos
-		level.handlerEvents();
+		sceneManager.handlerEvents();
 
 		// atualiza
-		quadroAtual++;
-		level.update();
+		sceneManager.update();
 
 		// desenho
 		ScreenUtils.clear(0, 0, 0, 1);
@@ -69,9 +64,16 @@ public class App extends ApplicationAdapter {
 		batch.begin(); // inicio --------------------
 		
 		//batch.draw(t1, 0, 0);
-		level.render(batch);
+		sceneManager.render(batch);
 		
 		batch.end(); // fim -------------------------
+
+		try {
+			Thread.sleep(interval);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -105,13 +107,13 @@ public class App extends ApplicationAdapter {
                 Recursos.getInstance().keyState.k_atirando = true;
                 break;
             case Keys.NUM_1:
-                interval=17;
+                interval=0;
                 break;
             case Keys.NUM_2:
                 interval=100;
                 break;
             case Keys.NUM_3:
-                interval=250;
+                interval=600;
                 break;
 			}
 			return true;

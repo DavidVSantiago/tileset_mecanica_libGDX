@@ -1,14 +1,14 @@
-package com.jumpbraid.engine.scene;
+package com.jumpbraid.engine.images;
 
 import com.jumpbraid.engine.game.IGameloop;
 
-public abstract class Layer implements IGameloop{
+public abstract class Element implements IGameloop{
     // atributos -------------------------------------------------------
     public float posX, posY; // posição de desenho do layer
     public float velX, velY;
 
     // construtor -------------------------------------------------------
-    public Layer(){
+    public Element(){
         posX=posY=0;
         velX=velY=0;
     }

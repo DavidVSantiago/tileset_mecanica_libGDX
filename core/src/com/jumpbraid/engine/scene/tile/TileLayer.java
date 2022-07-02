@@ -1,13 +1,12 @@
-package com.jumpbraid.engine.scene;
-
-import java.awt.Graphics;
+package com.jumpbraid.engine.scene.tile;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jumpbraid.engine.images.Element;
 import com.jumpbraid.engine.utils.Camera;
 import com.jumpbraid.engine.utils.Recursos;
 
 /** Representa o Layer de Tiles */
-public class TileLayer extends Layer{
+public class TileLayer extends Element{
     // atributos -------------------------------------------------------
     public int qtdColunasLayer, qtdLinhasLayer; // dimensões do layer
     public Tileset tileset; // tileset associado a este layer
@@ -44,12 +43,16 @@ public class TileLayer extends Layer{
         // percorre e desenha todos os tiles de destino
         for (int linha = 0; linha < qtdLinhasLayer; linha++) { // percorre todas as linhas do layer
             for (int coluna = 0; coluna < qtdColunasLayer; coluna++) { // percorre todas as colunas do layer
+                
+                // (OTIMIZAÇÃO) se o tile de destino estiver fora da camera, não o desenha
+                if(coluna*tileset.larguraTile>(camera.posX*fatorParalaxeX)+camera.largura||
+                linha*tileset.alturaTile>(camera.posY*fatorParalaxeY)+camera.altura) continue;
+                
                 // obtém o tile de destino
                 Tile tileDestino = obterTileDestino(linha,coluna);
-                // se o tile de destino estiver fora da camera, não o desenha
-                if(coluna*tileset.larguraTile>(camera.posX*fatorParalaxeX)+camera.largura||
-                    linha*tileset.alturaTile>(camera.posY*fatorParalaxeY)+camera.altura) continue;
-                if(tileDestino.ID==0)continue; // id 0 se refere a um tile vazio
+                
+                // (OTIMIZAÇÃO) id 0 se refere a um tile vazio
+                if(tileDestino.ID==0)continue;
                 
                 // obtém a origem de cada tile de destino
                 Tile tileOrigem = tileset.obterTileOrigem(tileDestino.ID-1); // correção de indice

@@ -4,17 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.jumpbraid.engine.scene.Level;
+import com.jumpbraid.engine.game.EstadoJogo;
 
 public class Recursos {
 	private static Recursos singleton = null;
 	// atributos
+	public static int qtdQuadrosGameOver = 100;
+	public static int qtdQuadrosMorto = 50;
 	public int LARGURA_TELA;
 	public int ALTURA_TELA;
 	public Camera camera;
 	public KeyState keyState;
 	public boolean permiteMoverH,permiteMoverV;
-	public long quadroAtual,contadorQuadros;
+	public EstadoJogo ESTADO;
+	public int vidas;
 
 	private Recursos() {
 	}
@@ -22,11 +25,24 @@ public class Recursos {
 	public void initRecursos(int larguraTela,int alturaTela){
 		LARGURA_TELA = larguraTela;
 		ALTURA_TELA = alturaTela;
-		camera = new Camera(0,0,larguraTela,alturaTela);
+		camera = new Camera(50,0,larguraTela,alturaTela);
 		keyState = new KeyState();
 		permiteMoverH = true;
 		permiteMoverV = true;
-		contadorQuadros = 0;
+		vidas = 3;
+		ESTADO = EstadoJogo.EXECUTANDO;
+	}
+	// Métodos de estado --------------------------------------------
+
+	public boolean isEXECUTANDO(){
+		return ESTADO==EstadoJogo.EXECUTANDO;
+	}
+	public boolean isGAMEOVER(){
+		return ESTADO==EstadoJogo.GAMEOVER;
+	}
+
+	public boolean isMORTO(){
+		return ESTADO==EstadoJogo.MORTO;
 	}
 
 	// Métodos estáticos --------------------------------------------

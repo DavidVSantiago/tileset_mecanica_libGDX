@@ -1,15 +1,13 @@
 package com.jumpbraid.engine.utils;
 
-import com.jumpbraid.engine.scene.Level;
-import com.jumpbraid.engine.scene.Tile;
+import com.jumpbraid.engine.scene.tile.TileLevel;
 
 public class Camera {
-    public static Camera singleton = null;
     // atributos
     public float posX,posY;
     public float velX,velY,velBaseX,velBaseY,velBaseYParede,decremVelY,limiteVelY;
     public int largura, altura;
-    public Level levelAtual;
+    public TileLevel levelAtual;
 
     // construtor
     public Camera(float posX,float posY,int largura,int altura){
@@ -17,12 +15,12 @@ public class Camera {
 		this.posY = posY;
 		this.largura = largura;
 		this.altura = altura;
-		this.velBaseX=4;
+		this.velBaseX=1.7f;
         this.velBaseY=4;
         this.velBaseYParede=1.5f;
 		this.velX=0;
 		this.velY=0;
-        this.decremVelY=0.2f;
+        this.decremVelY=0.18f;
         this.limiteVelY = 6;
     }
 
@@ -44,6 +42,7 @@ public class Camera {
         else if(keyState.k_direita)
             velX=velBaseX;
     }
+
     public void update(){
         posX+=velX;
         posY+=velY;
@@ -59,6 +58,10 @@ public class Camera {
         posY += velY;
     }
 
+    public void setPosition(float x, float y){
+        posX=x;
+        posY=y;
+    }
     // metodos --------------------------------
 
     public void checarColisao(){

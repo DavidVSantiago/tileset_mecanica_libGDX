@@ -1,4 +1,4 @@
-package com.jumpbraid.engine.scene;
+package com.jumpbraid.engine.scene.tile;
 
 import com.badlogic.gdx.graphics.Texture;
 
