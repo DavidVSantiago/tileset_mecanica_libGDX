@@ -14,7 +14,8 @@ public abstract class Element implements IGameloop{
     }
 
     // métodos gameloop -------------------------------------------------
-    public void update() {
+    @Override
+    public void update(long tempoDelta) {
         posX+=velX;
         posY+=velY;
     }

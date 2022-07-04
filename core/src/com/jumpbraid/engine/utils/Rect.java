@@ -2,11 +2,11 @@ package com.jumpbraid.engine.utils;
 
 public class Rect {
     // atributos ----------------------------------------------
-    public int x1, y1;
-    public int x2, y2;
+    public short x1, y1;
+    public short x2, y2;
 
     // construtor ---------------------------------------------
-    public Rect(int x1, int y1, int x2, int y2) {
+    public Rect(short x1, short y1, short x2, short y2) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;

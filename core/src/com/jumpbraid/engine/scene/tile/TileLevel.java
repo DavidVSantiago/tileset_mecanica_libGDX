@@ -9,33 +9,30 @@ import com.jumpbraid.engine.game.IGameloop;
 import com.jumpbraid.engine.person.EstadoPerson;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.person.Person.Orientacao;
+import com.jumpbraid.engine.scene.Scene;
+import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.utils.Camera;
 import com.jumpbraid.engine.utils.KeyState;
 import com.jumpbraid.engine.utils.Recursos;
 
 /** Tem o objetivo de atualizar e renderizar os Layers */
-public abstract class TileLevel implements IGameloop{
+public abstract class TileLevel extends Scene{
     // atributos
-    public String imagensDir;
     public TileLayer[] listaTileLayers; // lista com todos os layers do cenário
     public Tileset[] listaTilesets; // lista com todos os tilesets do cenário
     public int qtdColunasLevel, qtdLinhasLevel; // largura e altura de todo o cenario (em tiles)
     public int larguraLevel,alturaLevel;
-    public Person person;
     private Texture fundoFase;
     private Camera camera;
     private KeyState keyState;
-    private int acumuladorQuadros;
+    private Person person;
 
     // construtor
-    public TileLevel(String arquivoLevel,String fundoFase,String imagensDir,Person person) {
-        this.fundoFase = Recursos.carregarImagem(imagensDir+fundoFase);
-        this.imagensDir = imagensDir;
-        this.person = person;
-        person.ESTADO=EstadoPerson.PULANDO;
-        acumuladorQuadros=0;
+    public TileLevel(String arquivoLevel,Texture fundoFase) {
+        this.fundoFase = fundoFase;
+        person = Recursos.getInstance().person;
         // carrega o arquivo json do cenario
-        JsonValue fullJson = Recursos.carregarJson(imagensDir+arquivoLevel);
+        JsonValue fullJson = Recursos.carregarJson(arquivoLevel);
         qtdColunasLevel = fullJson.getInt("width");
         qtdLinhasLevel = fullJson.getInt("height");
         larguraLevel= qtdColunasLevel*fullJson.getInt("tilewidth");
@@ -46,6 +43,9 @@ public abstract class TileLevel implements IGameloop{
         parseTilesets(fullJson.get("tilesets"));
         // atribui os tilesets aos seus respectivos layers
         atribuiTilesetsLayers();
+
+        // limpa a memória desnecessária
+        fullJson = null;
         
         // normaliza os tileIDs e cria os tiles de destino (os desenhados na tela)
         for(int i=0;i<listaTileLayers.length;i++){
@@ -72,28 +72,30 @@ public abstract class TileLevel implements IGameloop{
     }
 
     @Override
-    public final void update() {
-
-        
-
+    public final void update(long tempoDelta) {
         atualizaMovimentoCamera();
         person.update();
         colisaoPersonLevel(); // Testa a colisão do personagem com os tiles do cenário
+        
+        // controla o reinício do jogo, quando o jogador morre
+        if(Recursos.ESTADO==EstadoJogo.MORTO){ 
+            SceneManager.transicaoParaGameOver("cenario_01.tmj");
+        }
     }
 
     @Override
-    public final void render(SpriteBatch batch) {
+    public final void render(SpriteBatch batch,long tempoDelta) {
         
         // renderiza os npcs
         batch.draw(fundoFase, 0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
                               0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
                               false,true);
-        listaTileLayers[0].render(batch); // renderiza Layer01-sky
-        listaTileLayers[1].render(batch); // renderiza Layer02-sky
-        listaTileLayers[2].render(batch); // renderiza Layer03-back
+        listaTileLayers[0].render(batch,tempoDelta); // renderiza Layer01-sky
+        listaTileLayers[1].render(batch,tempoDelta); // renderiza Layer02-sky
+        listaTileLayers[2].render(batch,tempoDelta); // renderiza Layer03-back
         person.render(batch);
-        listaTileLayers[3].render(batch); // renderiza Layer04-front
-        listaTileLayers[4].render(batch); // renderiza Layer05-colliders
+        listaTileLayers[3].render(batch,tempoDelta); // renderiza Layer04-front
+        listaTileLayers[4].render(batch,tempoDelta); // renderiza Layer05-colliders
     }
 
 
@@ -104,12 +106,12 @@ public abstract class TileLevel implements IGameloop{
         for(int i=0;i<jsonLayers.size;i++){
             JsonValue child = it.next();
             // lê os atributos do layer
-            int qtdLinhasLayer = child.getInt("height");
-            int qtdColunasLayer = child.getInt("width");
+            short qtdLinhasLayer = child.getShort("height");
+            short qtdColunasLayer = child.getShort("width");
             float fatorParalaxeX = (child.has("parallaxx"))?child.getFloat("parallaxx"):1.0f;
             float fatorParalaxeY = (child.has("parallaxy"))?child.getFloat("parallaxy"):1.0f;
             // captura os IDs do layer
-            int[] tileIDs = child.get("data").asIntArray();
+            short[] tileIDs = child.get("data").asShortArray();
             // cria um novo TileLayer e o adiciona à lista
             listaTileLayers[i] = new TileLayer(tileIDs, qtdLinhasLayer, qtdColunasLayer,fatorParalaxeX,fatorParalaxeY);
             
@@ -119,19 +121,19 @@ public abstract class TileLevel implements IGameloop{
     private void parseTilesets(JsonValue jsonTilesets) {
         listaTilesets = new Tileset[jsonTilesets.size];
         JsonIterator it = jsonTilesets.iterator();
-        for(int i=0;i<jsonTilesets.size;i++){
+        for(short i=0;i<jsonTilesets.size;i++){
             JsonValue child = it.next();
-            int firstGridId = child.getInt("firstgid");
+            short firstGridId = child.getShort("firstgid");
             // captura os dados de cada tileset
-            Texture img = Recursos.carregarImagem(imagensDir + child.getString("image"));
-            int larguraTile = child.getInt("tilewidth");
-            int alturaTile = child.getInt("tileheight");
-            int espacoTiles = child.getInt("spacing");
-            int margemTiles = child.getInt("margin");
-            int larguraTileset = child.getInt("imagewidth");
-            int alturaTileset = child.getInt("imageheight");
-            int qtdTiles = child.getInt("tilecount");
-            int qtdColunasTileset = child.getInt("columns");
+            Texture img = Recursos.getInstance().tilesetImages.get(child.getString("name"));
+            short larguraTile = child.getShort("tilewidth");
+            short alturaTile = child.getShort("tileheight");
+            short espacoTiles = child.getShort("spacing");
+            short margemTiles = child.getShort("margin");
+            short larguraTileset = child.getShort("imagewidth");
+            short alturaTileset = child.getShort("imageheight");
+            short qtdTiles = child.getShort("tilecount");
+            short qtdColunasTileset = child.getShort("columns");
             // cria um novo tileset com os dados capturados do arquivo
             Tileset tileset = new Tileset(img, firstGridId, larguraTile, alturaTile, espacoTiles, margemTiles, larguraTileset,
                     alturaTileset, qtdTiles, qtdColunasTileset);
@@ -482,7 +484,7 @@ public abstract class TileLevel implements IGameloop{
     }  
 
     public void reiniciaLevel(){
-        Recursos.getInstance().ESTADO=EstadoJogo.EXECUTANDO;
+        Recursos.ESTADO=EstadoJogo.EXECUTANDO;
         person.bloqueiaTodoMovimento=false;
         person.bloqueiaMovimentoH=false;
         camera.setPosition(0, alturaLevel-camera.altura);

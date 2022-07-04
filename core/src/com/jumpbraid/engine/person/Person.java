@@ -32,6 +32,7 @@ public abstract class Person{
 
     // construtor --------------------------------------------------
     public Person(){
+        ESTADO=EstadoPerson.PULANDO;
         camera = Recursos.getInstance().camera;
         bloqueiaMovimentoH = false;
         bloqueiaTodoMovimento = false;
@@ -57,17 +58,39 @@ public abstract class Person{
         ativarCaixaColisao = true;
         ativarCaixaMove = true;
         // carrega o sprite e quadros
-        sprite = Recursos.carregarImagem("imgs/charset.png");
-        spriteParado = new Rect(0,0,32,32);
-        spriteCorrendo = new Rect(32,0,64,32);
-        spritePulando = new Rect(64,0,96,32);
-        spriteParede = new Rect(96,0,128,32);
-        spriteAtirando = new Rect(128,0,160,32);
-        spriteCorrendoAtirando = new Rect(160,0,192,32);
-        spritePulandoAtirando = new Rect(192,0,224,32);
-        spriteCaixaColisao = Recursos.carregarImagem("imgs/caixaColisao.png");
-        spriteCaixaMove = Recursos.carregarImagem("imgs/caixaMove.png");
+        sprite = Recursos.getInstance().charset;
+        spriteParado = new Rect((short)0,(short)0,(short)32,(short)32);
+        spriteCorrendo = new Rect((short)32,(short)0,(short)64,(short)32);
+        spritePulando = new Rect((short)64,(short)0,(short)96,(short)32);
+        spriteParede = new Rect((short)96,(short)0,(short)128,(short)32);
+        spriteAtirando = new Rect((short)128,(short)0,(short)160,(short)32);
+        spriteCorrendoAtirando = new Rect((short)160,(short)0,(short)192,(short)32);
+        spritePulandoAtirando = new Rect((short)192,(short)0,(short)224,(short)32);
+        spriteCaixaColisao = Recursos.getInstance().caixaColisao;
+        spriteCaixaMove = Recursos.getInstance().caixaMove;
     }
+    
+    public void reinicia(){
+        ESTADO=EstadoPerson.PULANDO;
+        bloqueiaMovimentoH = false;
+        bloqueiaTodoMovimento = false;
+        acumuladorQuadro = 0;
+        posX=(Recursos.getInstance().LARGURA_TELA/2.0f)-(largura/2);
+        posY=(Recursos.getInstance().ALTURA_TELA/2.0f)-(altura/2);
+        velBaseX = 1;
+        velBaseY = 3;
+        velY=0;
+        ORIENTACAO = Orientacao.DIREITA;
+        fatorDiminuicaoH = 8;
+        fatorDiminuicaoV = 3;
+        caixaColisao = new RectF((posX+fatorDiminuicaoH), (posY)+fatorDiminuicaoV, (posX+largura)-fatorDiminuicaoH,(posY+altura));
+        caixaMove = new RectF(Recursos.getInstance().LARGURA_TELA*0.40f,
+                                  Recursos.getInstance().ALTURA_TELA*0.38f,
+                                  Recursos.getInstance().LARGURA_TELA*0.6f,
+                                  Recursos.getInstance().ALTURA_TELA*0.72f);
+    }
+
+    // Métodos gameloop -----------------------/
 
     public void handlerEvents(){
         // se o personagem estiver bloqueado, interrompe aqui
@@ -145,8 +168,6 @@ public abstract class Person{
 
     // Métodos quadros --------------------------------------------
 
-    public int paradoQuadroCont=0;
-    public int correndoQuadroCont=0;
     public Rect getQuadro(){
         if(ESTADO==EstadoPerson.PARADO){
             return spriteParado;
@@ -295,8 +316,8 @@ public abstract class Person{
             caixaColisao.y2 = caixaMove.y2;
             caixaColisao.y1=caixaColisao.y2-altura;
             if(caixaColisao.y2>=Recursos.getInstance().ALTURA_TELA){
-                Recursos.getInstance().ESTADO=EstadoJogo.MORTO;
                 bloqueiaTodoMovimento=true;
+                Recursos.agendarTransicaoEstadoJogo(1000,EstadoJogo.MORTO);
             }
             return true;
         }

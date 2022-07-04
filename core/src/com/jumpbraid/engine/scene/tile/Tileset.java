@@ -6,19 +6,19 @@ import com.badlogic.gdx.graphics.Texture;
 public class Tileset {
     // atributos
     public Texture img; // imagem qo tileset
-    int firstGridId;
-    int larguraTile, alturaTile; // dimensões de cada tile do tileset (em pixel)
-    int espacoTiles, margemTiles;
-    int larguraTileset, alturaTileset; // dimensões da imagem do tileset (em pixel)
-    int qtdTiles; // quantidade total de tiles no tileset
-    int qtdColunasTileset; // quantidade de colunas do tileset
+    short firstGridId;
+    short larguraTile, alturaTile; // dimensões de cada tile do tileset (em pixel)
+    short espacoTiles, margemTiles;
+    short larguraTileset, alturaTileset; // dimensões da imagem do tileset (em pixel)
+    short qtdTiles; // quantidade total de tiles no tileset
+    short qtdColunasTileset; // quantidade de colunas do tileset
     public Tile[] tilesOrigem; // retangulos de recorte do tileset
 
     // construtor
-    public Tileset(Texture img, int firstGridId,
-            int larguraTile, int alturaTile,
-            int espacoTiles, int margemTiles, int larguraTileset, int alturaTileset,
-            int qtdTiles, int qtdColunasTileset) {
+    public Tileset(Texture img, short firstGridId,
+            short larguraTile, short alturaTile,
+            short espacoTiles, short margemTiles, short larguraTileset, short alturaTileset,
+            short qtdTiles, short qtdColunasTileset) {
         this.firstGridId = firstGridId;
         this.img = img;
         this.larguraTile = larguraTile;
@@ -31,12 +31,12 @@ public class Tileset {
         this.qtdColunasTileset = qtdColunasTileset;
         // inicializa todos os tiles de recorte do tileset
         tilesOrigem = new Tile[qtdTiles];
-        for (int i = 0; i < qtdTiles; i++) {
+        for (short i = 0; i < qtdTiles; i++) {
             // define as coordenadas x e y de recorte na imagem do tileset
-            int x1 = (i % qtdColunasTileset) * larguraTile;
-            int y1 = (i / qtdColunasTileset) * alturaTile;
-            int x2 = x1 + larguraTile;
-            int y2 = y1 + alturaTile;
+            short x1 = (short)((i % qtdColunasTileset) * larguraTile);
+            short y1 = (short)((i / qtdColunasTileset) * alturaTile);
+            short x2 = (short)(x1 + larguraTile);
+            short y2 = (short)(y1 + alturaTile);
             tilesOrigem[i] = new Tile(x1, y1, x2, y2, i);
         }
     }

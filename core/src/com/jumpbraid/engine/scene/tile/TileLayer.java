@@ -12,12 +12,12 @@ public class TileLayer extends Element{
     public Tileset tileset; // tileset associado a este layer
     
     public float fatorParalaxeX,fatorParalaxeY;
-    public int[] tileIDs; // ids de mapeamento do cenário
+    public short[] tileIDs; // ids de mapeamento do cenário
     public Tile[][] tilesDestino; // retangulos de recorte dos tiles destino na tela
     private Camera camera;
 
     // construtor
-    public TileLayer(int[] tileIDs, int qtdLinhasLayer, int qtdColunasLayer,
+    public TileLayer(short[] tileIDs, int qtdLinhasLayer, int qtdColunasLayer,
                     float fatorParalaxeX,float fatorParalaxeY) {
         super();
         this.qtdColunasLayer = qtdColunasLayer;
@@ -34,12 +34,12 @@ public class TileLayer extends Element{
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(long tempoDelta) {
+        super.update(tempoDelta);
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch,long tempoDelta) {
         // percorre e desenha todos os tiles de destino
         for (int linha = 0; linha < qtdLinhasLayer; linha++) { // percorre todas as linhas do layer
             for (int coluna = 0; coluna < qtdColunasLayer; coluna++) { // percorre todas as colunas do layer
@@ -71,9 +71,9 @@ public class TileLayer extends Element{
 
     // Métodos ----------------------------------------------------
     public void normalizaIDs(){
-        for (int i = 0; i < tileIDs.length; i++) {
+        for (short i = 0; i < tileIDs.length; i++) {
             if(tileIDs[i]==0) continue;
-                tileIDs[i] = (tileIDs[i]-tileset.firstGridId)+1;
+                tileIDs[i] = (short)((tileIDs[i]-tileset.firstGridId)+1);
         }
     }
     public void criaTilesDestino(){
@@ -81,10 +81,10 @@ public class TileLayer extends Element{
         tilesDestino = new Tile[qtdLinhasLayer][qtdColunasLayer];
         for (int linha = 0; linha < qtdLinhasLayer; linha++) { // percorre todas as linhas do layer
             for (int coluna = 0; coluna < qtdColunasLayer; coluna++) { // percorre todas as colunas do layer
-                int dx1 = coluna * tileset.larguraTile;
-                int dy1 = linha * tileset.alturaTile;
-                int dx2 = dx1 + tileset.larguraTile;
-                int dy2 = dy1 + tileset.alturaTile;
+                short dx1 = (short)(coluna * tileset.larguraTile);
+                short dy1 = (short)(linha * tileset.alturaTile);
+                short dx2 = (short)(dx1 + tileset.larguraTile);
+                short dy2 = (short)(dy1 + tileset.alturaTile);
                 tilesDestino[linha][coluna] = new Tile(dx1, dy1, dx2, dy2, tileIDs[(linha*qtdColunasLayer)+coluna]);
             }
         }

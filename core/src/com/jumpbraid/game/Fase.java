@@ -1,14 +1,14 @@
 package com.jumpbraid.game;
 
-import com.jumpbraid.engine.person.Person;
+import com.badlogic.gdx.graphics.Texture;
 import com.jumpbraid.engine.scene.tile.TileLevel;
 
 public class Fase extends TileLevel{
     // atributos -------------------------------------------------------
 
     // construtor -------------------------------------------------------
-    public Fase(String mapaFase,String fundoFase,String imagemDir,Person person){
-        super(mapaFase,fundoFase,imagemDir,person);
+    public Fase(String arquivoLevel,Texture fundoFase){
+        super(arquivoLevel,fundoFase);
     }
 
     // métodos gameloop indiretos ---------------------------------------

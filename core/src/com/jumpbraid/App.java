@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Config;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.scene.tile.TileLevel;
+import com.jumpbraid.engine.utils.Levels;
 import com.jumpbraid.engine.utils.Recursos;
 import com.jumpbraid.game.Fase;
 import com.jumpbraid.game.Personagem;
@@ -29,7 +31,7 @@ public class App extends ApplicationAdapter {
 	SpriteBatch batch;
 	public boolean k_touch;
     private int interval = 17;
-	
+	long tempoInicio,tempoFinal,tempoDelta;
 	
 	// elementos da cena
 	Texture t1;
@@ -48,23 +50,32 @@ public class App extends ApplicationAdapter {
 		m_viewport = new FitViewport(LARGURA_TELA, ALTURA_TELA,camera);
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(new EventoEntrada()); // gerenciador de eventos
+		tempoInicio=tempoFinal=TimeUtils.nanoTime();
+		tempoDelta=0L;
 	}
 
 	@Override
 	public void render () {
-		// gerencia os eventos
+		
+		// 01 gerencia os eventos ----------------------------------------------
 		sceneManager.handlerEvents();
+		// 01 fim --------------------------------------------------------------
+		
+		// 02 atualiza ---------------------------------------------------------
+		tempoInicio = TimeUtils.nanoTime();
+        tempoDelta = tempoInicio-tempoFinal;
 
-		// atualiza
-		sceneManager.update();
+		sceneManager.update(tempoDelta);
+		
+		tempoFinal=tempoInicio;
+		// 02 fim --------------------------------------------------------------
 
-		// desenho
+		// 03 desenha tudo na tela ---------------------------------------------
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin(); // inicio --------------------
 		
-		//batch.draw(t1, 0, 0);
-		sceneManager.render(batch);
+		sceneManager.render(batch, tempoDelta);
 		
 		batch.end(); // fim -------------------------
 
@@ -74,6 +85,7 @@ public class App extends ApplicationAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// 03 fim --------------------------------------------------------------
 	}
 
 	
@@ -115,6 +127,12 @@ public class App extends ApplicationAdapter {
             case Keys.NUM_3:
                 interval=600;
                 break;
+			case Keys.NUM_4:
+				SceneManager.iniciarTransicaoLevel(Levels.LEVEL_01);
+                break;
+			case Keys.NUM_5:
+				SceneManager.iniciarTransicaoLevel(Levels.LEVEL_02);
+                break;
 			}
 			return true;
 		}
@@ -139,23 +157,25 @@ public class App extends ApplicationAdapter {
 				return true;
 		}
 		public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-			if(screenX>LARGURA_TELA/2)
-				Recursos.getInstance().keyState.k_direita = true;
-			else if(screenX<LARGURA_TELA/2)
-				Recursos.getInstance().keyState.k_esquerda = true;
+			// if(screenX>LARGURA_TELA/2)
+			// 	Recursos.getInstance().keyState.k_direita = true;
+			// else if(screenX<LARGURA_TELA/2)
+			// 	Recursos.getInstance().keyState.k_esquerda = true;
 
-			if(screenY>ALTURA_TELA/2)
-				Recursos.getInstance().keyState.k_baixo = true;
-			else if(screenY<ALTURA_TELA/2)
-				Recursos.getInstance().keyState.k_cima = true;
+			// if(screenY>ALTURA_TELA/2)
+			// 	Recursos.getInstance().keyState.k_baixo = true;
+			// else if(screenY<ALTURA_TELA/2)
+			// 	Recursos.getInstance().keyState.k_cima = true;
 			return true;
 		}
-
+		
 		public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-			Recursos.getInstance().keyState.k_direita = false;
-			Recursos.getInstance().keyState.k_esquerda = false;
-			Recursos.getInstance().keyState.k_baixo = false;
-			Recursos.getInstance().keyState.k_cima = false;
+			if(Recursos.ESTADO==EstadoJogo.EXECUTANDO)
+				SceneManager.transicaoParaGameOver("cenario_01.tmj");
+			// Recursos.getInstance().keyState.k_direita = false;
+			// Recursos.getInstance().keyState.k_esquerda = false;
+			// Recursos.getInstance().keyState.k_baixo = false;
+			// Recursos.getInstance().keyState.k_cima = false;
 			return true;
 		}
 	}
