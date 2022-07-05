@@ -1,18 +1,16 @@
 package com.jumpbraid.engine.scene.tile;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 import com.jumpbraid.engine.game.EstadoJogo;
-import com.jumpbraid.engine.game.IGameloop;
-import com.jumpbraid.engine.person.EstadoPerson;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.person.Person.Orientacao;
 import com.jumpbraid.engine.scene.Scene;
 import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.utils.Camera;
 import com.jumpbraid.engine.utils.KeyState;
+import com.jumpbraid.engine.utils.Levels;
 import com.jumpbraid.engine.utils.Recursos;
 
 /** Tem o objetivo de atualizar e renderizar os Layers */
@@ -23,16 +21,18 @@ public abstract class TileLevel extends Scene{
     public int qtdColunasLevel, qtdLinhasLevel; // largura e altura de todo o cenario (em tiles)
     public int larguraLevel,alturaLevel;
     private Texture fundoFase;
-    private Camera camera;
+    protected Camera camera;
     private KeyState keyState;
-    private Person person;
+    protected Person person;
+    private String nameClassLevel;
 
     // construtor
-    public TileLevel(String arquivoLevel,Texture fundoFase) {
+    public TileLevel(Levels level,String nameClassLevel,Texture fundoFase) {
+        this.nameClassLevel = nameClassLevel;
         this.fundoFase = fundoFase;
         person = Recursos.getInstance().person;
         // carrega o arquivo json do cenario
-        JsonValue fullJson = Recursos.carregarJson(arquivoLevel);
+        JsonValue fullJson = Recursos.carregarJson(Recursos.dirIMGS+level.toString());
         qtdColunasLevel = fullJson.getInt("width");
         qtdLinhasLevel = fullJson.getInt("height");
         larguraLevel= qtdColunasLevel*fullJson.getInt("tilewidth");
@@ -57,8 +57,7 @@ public abstract class TileLevel extends Scene{
         camera.setPosition(0, alturaLevel-camera.altura);
         camera.levelAtual = this; // obrigatório, para a camera poder calcular o seu deslocamento dentro do mapa
         keyState = Recursos.getInstance().keyState;
-        person.setCaixaMoveEsq(); // amplia a caixa de movimentação, para o posicionamento inicial no cenário
-        person.setPosition(camera.largura*0.2f,camera.altura*0.42f);
+        person.reinicia();
     }
 
     /** Implemente este método e especifique quais os tilesets associados a quais layers do level */
@@ -72,30 +71,30 @@ public abstract class TileLevel extends Scene{
     }
 
     @Override
-    public final void update(long tempoDelta) {
+    public final void update() {
         atualizaMovimentoCamera();
         person.update();
         colisaoPersonLevel(); // Testa a colisão do personagem com os tiles do cenário
         
-        // controla o reinício do jogo, quando o jogador morre
-        if(Recursos.ESTADO==EstadoJogo.MORTO){ 
-            SceneManager.transicaoParaGameOver("cenario_01.tmj");
+        if(Recursos.ESTADO==EstadoJogo.MORTO){
+            Recursos.ESTADO=EstadoJogo.EXECUTANDO;
+            SceneManager.iniciarTransicaoLevel(nameClassLevel); // inicia transição para o prórpio level
         }
     }
 
     @Override
-    public final void render(SpriteBatch batch,long tempoDelta) {
+    public final void render() {
         
         // renderiza os npcs
-        batch.draw(fundoFase, 0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
+        Recursos.getInstance().batch.draw(fundoFase, 0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
                               0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
                               false,true);
-        listaTileLayers[0].render(batch,tempoDelta); // renderiza Layer01-sky
-        listaTileLayers[1].render(batch,tempoDelta); // renderiza Layer02-sky
-        listaTileLayers[2].render(batch,tempoDelta); // renderiza Layer03-back
-        person.render(batch);
-        listaTileLayers[3].render(batch,tempoDelta); // renderiza Layer04-front
-        listaTileLayers[4].render(batch,tempoDelta); // renderiza Layer05-colliders
+        listaTileLayers[0].render(); // renderiza Layer01-sky
+        listaTileLayers[1].render(); // renderiza Layer02-sky
+        listaTileLayers[2].render(); // renderiza Layer03-back
+        person.render();
+        listaTileLayers[3].render(); // renderiza Layer04-front
+        listaTileLayers[4].render(); // renderiza Layer05-colliders
     }
 
 

@@ -3,13 +3,15 @@ package com.jumpbraid.engine.person;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jumpbraid.engine.game.EstadoJogo;
+import com.jumpbraid.engine.game.IGameloop;
+import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.utils.Camera;
 import com.jumpbraid.engine.utils.KeyState;
 import com.jumpbraid.engine.utils.Rect;
 import com.jumpbraid.engine.utils.RectF;
 import com.jumpbraid.engine.utils.Recursos;
 
-public abstract class Person{
+public abstract class Person implements IGameloop{
     // atributos sprites -------------------------------------------
     public Texture sprite,spriteCaixaColisao,spriteCaixaMove;
     public Rect spriteParado, spriteCorrendo, spritePulando, spriteParede;
@@ -55,8 +57,8 @@ public abstract class Person{
                                   Recursos.getInstance().ALTURA_TELA*0.38f,
                                   Recursos.getInstance().LARGURA_TELA*0.6f,
                                   Recursos.getInstance().ALTURA_TELA*0.72f);
-        ativarCaixaColisao = true;
-        ativarCaixaMove = true;
+        ativarCaixaColisao = false;
+        ativarCaixaMove = false;
         // carrega o sprite e quadros
         sprite = Recursos.getInstance().charset;
         spriteParado = new Rect((short)0,(short)0,(short)32,(short)32);
@@ -133,6 +135,7 @@ public abstract class Person{
         }
     }
 
+    @Override
     public void update(){
         // se o personagem estiver bloqueado, interrompe aqui
         if(bloqueiaTodoMovimento) return;
@@ -147,23 +150,23 @@ public abstract class Person{
             camera.velY+=camera.decremVelY; // decrementa a velocidade vertical, para o personagem descer
         }
     }
-
-    public void render(SpriteBatch batch) {
+    @Override
+    public void render() {
         Rect sourceRect = getQuadro();
         
         if(ORIENTACAO==Orientacao.DIREITA)
-            batch.draw(sprite, caixaColisao.x1-fatorDiminuicaoH, caixaColisao.y1-fatorDiminuicaoV, largura, altura,
+            Recursos.getInstance().batch.draw(sprite, caixaColisao.x1-fatorDiminuicaoH, caixaColisao.y1-fatorDiminuicaoV, largura, altura,
                                sourceRect.x1, sourceRect.y1, sourceRect.x2-sourceRect.x1, sourceRect.y2-sourceRect.y1,
                                false,true);
         if(ORIENTACAO==Orientacao.ESQUERDA)
-            batch.draw(sprite, caixaColisao.x1-fatorDiminuicaoH, caixaColisao.y1-fatorDiminuicaoV, largura, altura,
+            Recursos.getInstance().batch.draw(sprite, caixaColisao.x1-fatorDiminuicaoH, caixaColisao.y1-fatorDiminuicaoV, largura, altura,
                                sourceRect.x1, sourceRect.y1, sourceRect.x2-sourceRect.x1, sourceRect.y2-sourceRect.y1,
                                true,true);
 
         if(ativarCaixaMove)
-            batch.draw(spriteCaixaMove,caixaMove.x1,caixaMove.y1,caixaMove.x2-caixaMove.x1,caixaMove.y2-caixaMove.y1);
+            Recursos.getInstance().batch.draw(spriteCaixaMove,caixaMove.x1,caixaMove.y1,caixaMove.x2-caixaMove.x1,caixaMove.y2-caixaMove.y1);
         if(ativarCaixaColisao)
-            batch.draw(spriteCaixaColisao,caixaColisao.x1,caixaColisao.y1,caixaColisao.x2-caixaColisao.x1,caixaColisao.y2-caixaColisao.y1);
+            Recursos.getInstance().batch.draw(spriteCaixaColisao,caixaColisao.x1,caixaColisao.y1,caixaColisao.x2-caixaColisao.x1,caixaColisao.y2-caixaColisao.y1);
     }
 
     // Métodos quadros --------------------------------------------
@@ -317,7 +320,7 @@ public abstract class Person{
             caixaColisao.y1=caixaColisao.y2-altura;
             if(caixaColisao.y2>=Recursos.getInstance().ALTURA_TELA){
                 bloqueiaTodoMovimento=true;
-                Recursos.agendarTransicaoEstadoJogo(1000,EstadoJogo.MORTO);
+                SceneManager.agendarTransicaoEstadoJogo(1e+9,EstadoJogo.MORTO);
             }
             return true;
         }

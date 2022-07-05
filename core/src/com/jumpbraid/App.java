@@ -6,20 +6,17 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Config;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.scene.SceneManager;
-import com.jumpbraid.engine.scene.tile.TileLevel;
 import com.jumpbraid.engine.utils.Levels;
 import com.jumpbraid.engine.utils.Recursos;
-import com.jumpbraid.game.Fase;
 import com.jumpbraid.game.Personagem;
+import com.jumpbraid.game.levels.Level_01;
+import com.jumpbraid.game.levels.Level_02;
 
 public class App extends ApplicationAdapter {
 	public static final int LARGURA_TELA = 426;
@@ -28,10 +25,9 @@ public class App extends ApplicationAdapter {
 	// elementos do jogo
 	public OrthographicCamera camera;
     public FitViewport m_viewport;
-	SpriteBatch batch;
 	public boolean k_touch;
     private int interval = 17;
-	long tempoInicio,tempoFinal,tempoDelta;
+	long tempoInicio,tempoFinal;
 	
 	// elementos da cena
 	Texture t1;
@@ -48,10 +44,8 @@ public class App extends ApplicationAdapter {
         camera.setToOrtho(true,LARGURA_TELA,ALTURA_TELA);
 		camera.update(); 
 		m_viewport = new FitViewport(LARGURA_TELA, ALTURA_TELA,camera);
-		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(new EventoEntrada()); // gerenciador de eventos
 		tempoInicio=tempoFinal=TimeUtils.nanoTime();
-		tempoDelta=0L;
 	}
 
 	@Override
@@ -63,21 +57,21 @@ public class App extends ApplicationAdapter {
 		
 		// 02 atualiza ---------------------------------------------------------
 		tempoInicio = TimeUtils.nanoTime();
-        tempoDelta = tempoInicio-tempoFinal;
+        Recursos.getInstance().tempoDelta = tempoInicio-tempoFinal;
 
-		sceneManager.update(tempoDelta);
+		sceneManager.update();
 		
 		tempoFinal=tempoInicio;
 		// 02 fim --------------------------------------------------------------
 
 		// 03 desenha tudo na tela ---------------------------------------------
 		ScreenUtils.clear(0, 0, 0, 1);
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin(); // inicio --------------------
+		Recursos.getInstance().batch.setProjectionMatrix(camera.combined);
+		Recursos.getInstance().batch.begin(); // inicio --------------------
 		
-		sceneManager.render(batch, tempoDelta);
+		sceneManager.render();
 		
-		batch.end(); // fim -------------------------
+		Recursos.getInstance().batch.end(); // fim -------------------------
 
 		try {
 			Thread.sleep(interval);
@@ -91,7 +85,7 @@ public class App extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+		Recursos.getInstance().batch.dispose();
 	}
 
 	@Override
@@ -128,10 +122,10 @@ public class App extends ApplicationAdapter {
                 interval=600;
                 break;
 			case Keys.NUM_4:
-				SceneManager.iniciarTransicaoLevel(Levels.LEVEL_01);
+				SceneManager.iniciarTransicaoLevel(Level_01.class.getName());
                 break;
 			case Keys.NUM_5:
-				SceneManager.iniciarTransicaoLevel(Levels.LEVEL_02);
+				SceneManager.iniciarTransicaoLevel(Level_02.class.getName());
                 break;
 			}
 			return true;
@@ -171,7 +165,7 @@ public class App extends ApplicationAdapter {
 		
 		public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 			if(Recursos.ESTADO==EstadoJogo.EXECUTANDO)
-				SceneManager.transicaoParaGameOver("cenario_01.tmj");
+				SceneManager.iniciarTransicaoLevel(Level_01.class.getName());
 			// Recursos.getInstance().keyState.k_direita = false;
 			// Recursos.getInstance().keyState.k_esquerda = false;
 			// Recursos.getInstance().keyState.k_baixo = false;

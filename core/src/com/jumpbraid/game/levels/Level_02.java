@@ -1,14 +1,19 @@
-package com.jumpbraid.game;
+package com.jumpbraid.game.levels;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.jumpbraid.engine.scene.tile.TileLevel;
+import com.jumpbraid.engine.utils.Levels;
+import com.jumpbraid.engine.utils.Recursos;
 
-public class Fase extends TileLevel{
+public class Level_02 extends TileLevel{
     // atributos -------------------------------------------------------
 
     // construtor -------------------------------------------------------
-    public Fase(String arquivoLevel,Texture fundoFase){
-        super(arquivoLevel,fundoFase);
+    public Level_02(){
+        super(Levels.LEVEL_01,Level_02.class.getName(),Recursos.getInstance().fundo_cenario_01);
+
+        // define a posição do personagem nesse level
+        person.setCaixaMoveEsq(); // amplia a caixa de movimentação, para o posicionamento inicial no cenário
+        person.setPosition(camera.largura*0.2f,camera.altura*0.42f);
     }
 
     // métodos gameloop indiretos ---------------------------------------

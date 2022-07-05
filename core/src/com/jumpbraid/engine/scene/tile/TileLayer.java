@@ -34,12 +34,12 @@ public class TileLayer extends Element{
     }
 
     @Override
-    public void update(long tempoDelta) {
-        super.update(tempoDelta);
+    public void update() {
+        super.update();
     }
 
     @Override
-    public void render(SpriteBatch batch,long tempoDelta) {
+    public void render() {
         // percorre e desenha todos os tiles de destino
         for (int linha = 0; linha < qtdLinhasLayer; linha++) { // percorre todas as linhas do layer
             for (int coluna = 0; coluna < qtdColunasLayer; coluna++) { // percorre todas as colunas do layer
@@ -62,7 +62,7 @@ public class TileLayer extends Element{
                 float width = tileDestino.x2-tileDestino.x1;
                 float height = tileDestino.y2-tileDestino.y1;
                 // desenha cada tile em sua respectiva posição
-                batch.draw(tileset.img,dx,dy,width,height,
+                Recursos.getInstance().batch.draw(tileset.img,dx,dy,width,height,
                             tileOrigem.x1, tileOrigem.y1,
                             tileOrigem.x2-tileOrigem.x1, tileOrigem.y2-tileOrigem.y1, false,true);
             }

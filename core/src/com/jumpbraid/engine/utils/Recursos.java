@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.jumpbraid.engine.game.EstadoJogo;
@@ -24,6 +25,10 @@ public class Recursos {
 	public Person person;
 	public int vidas;
 	public static EstadoJogo ESTADO;
+	public SpriteBatch batch;
+	public static String dirIMGS = "imgs/";
+
+	public long tempoDelta, tempoAcumulado;
 
 	// Profiling --------------------
 	private static Runtime rt = Runtime.getRuntime();
@@ -37,8 +42,6 @@ public class Recursos {
 	public Texture charset,caixaColisao,caixaMove;
 	// Imagens das telas
 	public Texture telaGameOver,telaLoading;
-	// Nome dos arquivos dos levels
-	public static Levels NOME_LEVEL_DESTINO;
 
 	// Threads
 	private static Thread thread;
@@ -47,7 +50,8 @@ public class Recursos {
 	}
 	// Métodos --------------------------------------------
 	public void initRecursos(int larguraTela,int alturaTela){
-
+		batch = new SpriteBatch();
+		tempoDelta=0L;
 		carregarImagens();
 		LARGURA_TELA = larguraTela;
 		ALTURA_TELA = alturaTela;
@@ -102,22 +106,6 @@ public class Recursos {
 		telaGameOver = new Texture("imgs/game_over.png");
 		telaLoading = new Texture("imgs/loading.png");
 	}
-
-	// Métodos de agendamento -------------------------------------------
-	public static void agendarTransicaoEstadoJogo(final int tempo, final EstadoJogo ESTADO){
-         thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-				try {
-					Thread.sleep(tempo);
-					Recursos.ESTADO = ESTADO;
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}	
-            }
-        });
-		thread.run();
-    }
 
 	public static void printUsedMemory(){
 		total_mem = rt.totalMemory();
