@@ -6,7 +6,7 @@ import com.jumpbraid.engine.game.IGameloop;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.scene.tile.TileLevel;
 import com.jumpbraid.engine.utils.Recursos;
-import com.jumpbraid.game.levels.Level_01;
+import com.jumpbraid.game.telas.levels.Level_01;
 
 /** Tem o objetivo de gerenciar as cenas do jogo */
 public class SceneManager implements IGameloop{
@@ -73,25 +73,25 @@ public class SceneManager implements IGameloop{
 
     // Temporizadores de transição -----------------------------------
     private void temporizadorFadeOut(){
-        Recursos.getInstance().tempoAcumulado+=Recursos.getInstance().tempoDelta;
-        float alpha = (float)(Recursos.getInstance().tempoAcumulado/tempoFade);
-        Color c = Recursos.getInstance().batch.getColor();
-        Recursos.getInstance().batch.setColor(new Color(c.r, c.g, c.b, 1.0f-alpha));
-        if(Recursos.getInstance().tempoAcumulado>=tempoFade){
+        Recursos.tempoAcumulado+=Recursos.tempoDelta;
+        float alpha = (float)(Recursos.tempoAcumulado/tempoFade);
+        Color c = Recursos.batch.getColor();
+        Recursos.batch.setColor(new Color(c.r, c.g, c.b, 1.0f-alpha));
+        if(Recursos.tempoAcumulado>=tempoFade){
             _ativador_level_fadeOut=false;
             _ativador_level=true;
-            Recursos.getInstance().tempoAcumulado=0L;
+            Recursos.tempoAcumulado=0L;
             cenaAtual = cenaLoading;
         }
     }
     private void temporizadorFadeIn(){
-        Recursos.getInstance().tempoAcumulado+=Recursos.getInstance().tempoDelta;
-        float alpha = (float)(Recursos.getInstance().tempoAcumulado/tempoFade);
-        Color c = Recursos.getInstance().batch.getColor();
-        Recursos.getInstance().batch.setColor(new Color(c.r, c.g, c.b, alpha));
-        if(Recursos.getInstance().tempoAcumulado>=tempoFade){
+        Recursos.tempoAcumulado+=Recursos.tempoDelta;
+        float alpha = (float)(Recursos.tempoAcumulado/tempoFade);
+        Color c = Recursos.batch.getColor();
+        Recursos.batch.setColor(new Color(c.r, c.g, c.b, alpha));
+        if(Recursos.tempoAcumulado>=tempoFade){
             _ativador_level_fadeIn=false;
-            Recursos.getInstance().tempoAcumulado=0L;
+            Recursos.tempoAcumulado=0L;
         }
     }
 	private void temporizadorTransicaoLevel(){
@@ -103,9 +103,9 @@ public class SceneManager implements IGameloop{
             } catch (Exception e) { e.printStackTrace(); }
         }
         
-        Recursos.getInstance().tempoAcumulado+=Recursos.getInstance().tempoDelta;
-        if(Recursos.getInstance().tempoAcumulado>=tempoTransicao){ // acumulou tempo total da transição
-            Recursos.getInstance().tempoAcumulado=0;
+        Recursos.tempoAcumulado+=Recursos.tempoDelta;
+        if(Recursos.tempoAcumulado>=tempoTransicao){ // acumulou tempo total da transição
+            Recursos.tempoAcumulado=0;
             cenaAtual = novoLevel;
             _ativador_level=false;
             _ativador_level_fadeIn=true;
@@ -114,9 +114,9 @@ public class SceneManager implements IGameloop{
     }
     private void temporizadorTransicaoEstado(){
         // se for a primeira execução desse temporizador
-        Recursos.getInstance().tempoAcumulado+=Recursos.getInstance().tempoDelta;
-        if(Recursos.getInstance().tempoAcumulado>=tempoTransicaoEstado){ // acumulou tempo total da transição
-            Recursos.getInstance().tempoAcumulado=0;
+        Recursos.tempoAcumulado+=Recursos.tempoDelta;
+        if(Recursos.tempoAcumulado>=tempoTransicaoEstado){ // acumulou tempo total da transição
+            Recursos.tempoAcumulado=0;
             Recursos.ESTADO = NOVO_ESTADO;
             _ativador_estado=false;
         }

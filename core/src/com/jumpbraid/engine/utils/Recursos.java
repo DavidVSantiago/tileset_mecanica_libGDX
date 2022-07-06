@@ -1,8 +1,5 @@
 package com.jumpbraid.engine.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,26 +22,19 @@ public class Recursos {
 	public Person person;
 	public int vidas;
 	public static EstadoJogo ESTADO;
-	public SpriteBatch batch;
+	public static SpriteBatch batch;
 	public static String dirIMGS = "imgs/";
 
-	public long tempoDelta, tempoAcumulado;
+	public static long tempoDelta, tempoAcumulado;
 
 	// Profiling --------------------
 	private static Runtime rt = Runtime.getRuntime();
     private static double total_mem,free_mem, used_mem;
 
-	// Imagens de fundo dos cenários usados no jogo ----------------------
-	public Texture fundo_cenario_01;
-	// Imagens dos tilesets usados no jogo -------------------------------
-	public Map<String,Texture> tilesetImages;
 	// Imagens dos NPCs
 	public Texture charset,caixaColisao,caixaMove;
 	// Imagens das telas
 	public Texture telaGameOver,telaLoading;
-
-	// Threads
-	private static Thread thread;
 
 	private Recursos() {
 	}
@@ -91,20 +81,18 @@ public class Recursos {
 	}
 	//
 
-	public void carregarImagens(){
-		// carrega as imagens de fundo dos cenários
-		fundo_cenario_01 = new Texture("imgs/fundo_cenario_01.png");
-		// carrega as imagens dos tilesets usados nos cenários
-		tilesetImages = new HashMap<>();
-		tilesetImages.put("tileset_sky_02", new Texture("imgs/tileset_sky_02.png"));
-		tilesetImages.put("tileset", new Texture("imgs/tileset.png"));
+	private void carregarImagens(){	
 		// carrega as imagens dos NPCs
-		charset = new Texture("imgs/charset.png");
-		caixaColisao = new Texture("imgs/caixaColisao.png");
-		caixaMove = new Texture("imgs/caixaMove.png");
+		charset = carregarImagem("charset.png");
+		caixaColisao = carregarImagem("caixaColisao.png");
+		caixaMove = carregarImagem("caixaMove.png");
 		// carrega as imagens das telas
-		telaGameOver = new Texture("imgs/game_over.png");
-		telaLoading = new Texture("imgs/loading.png");
+		telaGameOver = carregarImagem("game_over.png");
+		telaLoading = carregarImagem("loading.png");
+	}
+
+	public static Texture carregarImagem(String arquivo){
+		return new Texture(dirIMGS+arquivo);
 	}
 
 	public static void printUsedMemory(){

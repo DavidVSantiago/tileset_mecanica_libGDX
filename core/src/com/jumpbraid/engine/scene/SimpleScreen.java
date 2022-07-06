@@ -1,6 +1,4 @@
 package com.jumpbraid.engine.scene;
-import com.badlogic.gdx.graphics.Texture;
-import com.jumpbraid.engine.utils.Recursos;
 
 public class SimpleScreen extends Scene{
     // atributos ----------------------------------------------

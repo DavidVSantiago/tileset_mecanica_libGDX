@@ -20,16 +20,14 @@ public abstract class TileLevel extends Scene{
     public Tileset[] listaTilesets; // lista com todos os tilesets do cenário
     public int qtdColunasLevel, qtdLinhasLevel; // largura e altura de todo o cenario (em tiles)
     public int larguraLevel,alturaLevel;
-    private Texture fundoFase;
     protected Camera camera;
     private KeyState keyState;
     protected Person person;
     private String nameClassLevel;
 
     // construtor
-    public TileLevel(Levels level,String nameClassLevel,Texture fundoFase) {
+    public TileLevel(Levels level,String nameClassLevel) {
         this.nameClassLevel = nameClassLevel;
-        this.fundoFase = fundoFase;
         person = Recursos.getInstance().person;
         // carrega o arquivo json do cenario
         JsonValue fullJson = Recursos.carregarJson(Recursos.dirIMGS+level.toString());
@@ -85,12 +83,8 @@ public abstract class TileLevel extends Scene{
     @Override
     public final void render() {
         
-        // renderiza os npcs
-        Recursos.getInstance().batch.draw(fundoFase, 0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-                              0, 0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-                              false,true);
-        listaTileLayers[0].render(); // renderiza Layer01-sky
-        listaTileLayers[1].render(); // renderiza Layer02-sky
+        listaTileLayers[0].render(); // renderiza Layer01-horizon
+        listaTileLayers[1].render(); // renderiza Layer02-back-paralax
         listaTileLayers[2].render(); // renderiza Layer03-back
         person.render();
         listaTileLayers[3].render(); // renderiza Layer04-front
@@ -124,7 +118,7 @@ public abstract class TileLevel extends Scene{
             JsonValue child = it.next();
             short firstGridId = child.getShort("firstgid");
             // captura os dados de cada tileset
-            Texture img = Recursos.getInstance().tilesetImages.get(child.getString("name"));
+            Texture img = Recursos.carregarImagem(child.getString("image"));
             short larguraTile = child.getShort("tilewidth");
             short alturaTile = child.getShort("tileheight");
             short espacoTiles = child.getShort("spacing");

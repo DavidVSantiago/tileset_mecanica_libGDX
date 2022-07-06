@@ -12,11 +12,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.scene.SceneManager;
-import com.jumpbraid.engine.utils.Levels;
 import com.jumpbraid.engine.utils.Recursos;
 import com.jumpbraid.game.Personagem;
-import com.jumpbraid.game.levels.Level_01;
-import com.jumpbraid.game.levels.Level_02;
+import com.jumpbraid.game.telas.levels.Level_01;
+import com.jumpbraid.game.telas.levels.Level_02;
 
 public class App extends ApplicationAdapter {
 	public static final int LARGURA_TELA = 426;
@@ -57,7 +56,7 @@ public class App extends ApplicationAdapter {
 		
 		// 02 atualiza ---------------------------------------------------------
 		tempoInicio = TimeUtils.nanoTime();
-        Recursos.getInstance().tempoDelta = tempoInicio-tempoFinal;
+        Recursos.tempoDelta = tempoInicio-tempoFinal;
 
 		sceneManager.update();
 		
@@ -66,12 +65,12 @@ public class App extends ApplicationAdapter {
 
 		// 03 desenha tudo na tela ---------------------------------------------
 		ScreenUtils.clear(0, 0, 0, 1);
-		Recursos.getInstance().batch.setProjectionMatrix(camera.combined);
-		Recursos.getInstance().batch.begin(); // inicio --------------------
+		Recursos.batch.setProjectionMatrix(camera.combined);
+		Recursos.batch.begin(); // inicio --------------------
 		
 		sceneManager.render();
 		
-		Recursos.getInstance().batch.end(); // fim -------------------------
+		Recursos.batch.end(); // fim -------------------------
 
 		try {
 			Thread.sleep(interval);
@@ -85,7 +84,7 @@ public class App extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		Recursos.getInstance().batch.dispose();
+		Recursos.batch.dispose();
 	}
 
 	@Override

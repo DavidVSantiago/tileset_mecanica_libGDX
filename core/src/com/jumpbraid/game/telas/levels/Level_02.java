@@ -1,15 +1,15 @@
-package com.jumpbraid.game.levels;
+package com.jumpbraid.game.telas.levels;
 
 import com.jumpbraid.engine.scene.tile.TileLevel;
 import com.jumpbraid.engine.utils.Levels;
 import com.jumpbraid.engine.utils.Recursos;
 
-public class Level_01 extends TileLevel{
+public class Level_02 extends TileLevel{
     // atributos -------------------------------------------------------
 
     // construtor -------------------------------------------------------
-    public Level_01(){
-        super(Levels.LEVEL_01,Level_01.class.getName(),Recursos.getInstance().fundo_cenario_01);
+    public Level_02(){
+        super(Levels.LEVEL_01,Level_02.class.getName());
 
         // define a posição do personagem nesse level
         person.setCaixaMoveEsq(); // amplia a caixa de movimentação, para o posicionamento inicial no cenário
