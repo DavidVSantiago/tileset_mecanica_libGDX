@@ -33,8 +33,6 @@ public class Recursos {
 
 	// Imagens dos NPCs
 	public Texture charset,caixaColisao,caixaMove;
-	// Imagens das telas
-	public Texture telaGameOver,telaLoading;
 
 	private Recursos() {
 	}
@@ -86,9 +84,6 @@ public class Recursos {
 		charset = carregarImagem("charset.png");
 		caixaColisao = carregarImagem("caixaColisao.png");
 		caixaMove = carregarImagem("caixaMove.png");
-		// carrega as imagens das telas
-		telaGameOver = carregarImagem("game_over.png");
-		telaLoading = carregarImagem("loading.png");
 	}
 
 	public static Texture carregarImagem(String arquivo){

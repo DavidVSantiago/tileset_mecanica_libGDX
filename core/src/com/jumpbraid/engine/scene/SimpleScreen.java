@@ -1,12 +1,15 @@
 package com.jumpbraid.engine.scene;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.jumpbraid.engine.utils.Recursos;
+
 public class SimpleScreen extends Scene{
     // atributos ----------------------------------------------
-    public int acumuladorQuadros;
-    
+    protected Texture img;
+
     // construtor ---------------------------------------------
-    public SimpleScreen() {
-  
+    public SimpleScreen(Texture img) {
+      this.img = img;
     }
 
     // métodos de colisão ------------------------------------------------
@@ -17,16 +20,13 @@ public class SimpleScreen extends Scene{
 
     @Override
     public void update() {
-      
     }
 
     @Override
     public void render() {
-      // DESENHAR NADA (PROPOSITAL!!!)
+      Recursos.batch.draw(img, 0, 0,
+                            Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
+                            0,0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
+                            false,true);
     }
-
-    
-
-
-    
 }

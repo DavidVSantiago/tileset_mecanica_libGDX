@@ -13,6 +13,7 @@ import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.utils.Recursos;
+import com.jumpbraid.engine.utils.Scenes.Tempo;
 import com.jumpbraid.game.Personagem;
 import com.jumpbraid.game.telas.levels.Level_01;
 import com.jumpbraid.game.telas.levels.Level_02;
@@ -121,10 +122,10 @@ public class App extends ApplicationAdapter {
                 interval=600;
                 break;
 			case Keys.NUM_4:
-				SceneManager.iniciarTransicaoLevel(Level_01.class.getName());
+				SceneManager.iniciarTransicaoCena(Level_01.class.getName(),Tempo.RAPIDO);
                 break;
 			case Keys.NUM_5:
-				SceneManager.iniciarTransicaoLevel(Level_02.class.getName());
+				SceneManager.iniciarTransicaoCena(Level_02.class.getName(),Tempo.RAPIDO);
                 break;
 			}
 			return true;
@@ -164,7 +165,7 @@ public class App extends ApplicationAdapter {
 		
 		public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 			if(Recursos.ESTADO==EstadoJogo.EXECUTANDO)
-				SceneManager.iniciarTransicaoLevel(Level_01.class.getName());
+				SceneManager.iniciarTransicaoCena(Level_01.class.getName(),Tempo.RAPIDO);
 			// Recursos.getInstance().keyState.k_direita = false;
 			// Recursos.getInstance().keyState.k_esquerda = false;
 			// Recursos.getInstance().keyState.k_baixo = false;

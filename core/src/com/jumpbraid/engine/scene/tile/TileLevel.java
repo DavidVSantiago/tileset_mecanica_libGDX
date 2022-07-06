@@ -10,7 +10,8 @@ import com.jumpbraid.engine.scene.Scene;
 import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.utils.Camera;
 import com.jumpbraid.engine.utils.KeyState;
-import com.jumpbraid.engine.utils.Levels;
+import com.jumpbraid.engine.utils.Scenes;
+import com.jumpbraid.engine.utils.Scenes.Tempo;
 import com.jumpbraid.engine.utils.Recursos;
 
 /** Tem o objetivo de atualizar e renderizar os Layers */
@@ -26,7 +27,7 @@ public abstract class TileLevel extends Scene{
     private String nameClassLevel;
 
     // construtor
-    public TileLevel(Levels level,String nameClassLevel) {
+    public TileLevel(Scenes.Levels level,String nameClassLevel) {
         this.nameClassLevel = nameClassLevel;
         person = Recursos.getInstance().person;
         // carrega o arquivo json do cenario
@@ -76,7 +77,7 @@ public abstract class TileLevel extends Scene{
         
         if(Recursos.ESTADO==EstadoJogo.MORTO){
             Recursos.ESTADO=EstadoJogo.EXECUTANDO;
-            SceneManager.iniciarTransicaoLevel(nameClassLevel); // inicia transição para o prórpio level
+            SceneManager.iniciarTransicaoCena(nameClassLevel,Tempo.RAPIDO); // inicia transição para o prórpio level
         }
     }
 
