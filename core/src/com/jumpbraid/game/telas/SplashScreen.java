@@ -18,6 +18,10 @@ public class SplashScreen extends SimpleScreen{
       tempoFadeIn = Tempo.MEDIO.getValue();
       tempoPermanencia = Tempo.LENTO.getValue();
       _ativador_01=true;
+      Recursos.playMenuMusic();
+      //Recursos.midiPlayer.open("01intro.mid");
+      //Recursos.midiPlayer.setLooping(true);
+      //Recursos.midiPlayer.play();
     }
 
     // métodos de colisão ------------------------------------------------

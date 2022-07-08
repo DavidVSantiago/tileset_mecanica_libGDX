@@ -1,4 +1,4 @@
-#Wed Jul 06 01:07:03 BRT 2022
+#Fri Jul 08 03:14:15 BRT 2022
 base.0=/home/algoldev/Desktop/CÓDIGOS/tileset_mecanica_libGDX/android/build/intermediates/dex/debug/mergeDexDebug/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

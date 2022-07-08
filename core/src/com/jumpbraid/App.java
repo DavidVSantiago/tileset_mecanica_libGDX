@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.jumpbraid.engine.audio.AudioPlayer;
+import com.jumpbraid.engine.audio.MidiPlayer;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.scene.SceneManager;
@@ -33,10 +35,17 @@ public class App extends ApplicationAdapter {
 	Texture t1;
 	Person person;
 	SceneManager sceneManager;
+	MidiPlayer midiPlayer;
+	AudioPlayer audioPlayer;
+	
+	public App(MidiPlayer midiPlayer, AudioPlayer audioPlayer){
+		this.midiPlayer = midiPlayer;
+		this.audioPlayer = audioPlayer;
+	} 
 	
 	@Override
 	public void create () {
-		Recursos.getInstance().initRecursos(LARGURA_TELA,ALTURA_TELA);
+		Recursos.getInstance().initRecursos(LARGURA_TELA,ALTURA_TELA,midiPlayer,audioPlayer);
 		person = new Personagem();
 		sceneManager = new SceneManager(person);
 

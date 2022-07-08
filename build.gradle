@@ -57,6 +57,7 @@ project(":android") {
     configurations { natives }
 
     dependencies {
+        compile fileTree(dir:"../libs", include: "*.jar")
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

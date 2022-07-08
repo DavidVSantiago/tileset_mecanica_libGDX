@@ -1,10 +1,15 @@
 package com.jumpbraid.engine.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.jumpbraid.engine.audio.AudioPlayer;
+import com.jumpbraid.engine.audio.MidiPlayer;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.game.Personagem;
@@ -24,6 +29,7 @@ public class Recursos {
 	public static EstadoJogo ESTADO;
 	public static SpriteBatch batch;
 	public static String dirIMGS = "imgs/";
+	public static String dirAudio = "audio/";
 
 	public static long tempoDelta, tempoAcumulado;
 
@@ -34,10 +40,15 @@ public class Recursos {
 	// Imagens dos NPCs
 	public Texture charset,caixaColisao,caixaMove;
 
+	public static MidiPlayer midiPlayer;
+	public static AudioPlayer audioPlayer;
+
 	private Recursos() {
 	}
 	// Métodos --------------------------------------------
-	public void initRecursos(int larguraTela,int alturaTela){
+	public void initRecursos(int larguraTela,int alturaTela, MidiPlayer midiPlayer, AudioPlayer audioPlayer){
+		Recursos.midiPlayer = midiPlayer;
+		Recursos.audioPlayer = audioPlayer;
 		batch = new SpriteBatch();
 		tempoDelta=0L;
 		carregarImagens();
@@ -50,6 +61,7 @@ public class Recursos {
 		vidas = 3;
 		ESTADO = EstadoJogo.EXECUTANDO;
 		person = new Personagem();
+		
 	}
 
 	// Métodos de estado --------------------------------------------
@@ -95,5 +107,10 @@ public class Recursos {
     	free_mem = rt.freeMemory();
    		used_mem = (total_mem - free_mem)* 1e-6;
 		System.out.println("Amount of used memory: " + used_mem+"MB");
+	}
+
+	// Métodos estáticos de audio --------------------------------------------
+	public static void playMenuMusic(){
+		audioPlayer.play();
 	}
 }
