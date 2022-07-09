@@ -1,77 +1,68 @@
 package com.jumpbraid;
 
-import android.app.Activity;
-import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioTrack;
-import android.os.Bundle;
 
-import com.badlogic.gdx.Audio;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+import android.os.Build;
+import android.util.Log;
+
 import com.jumpbraid.engine.audio.AudioPlayer;
 import com.jumpbraid.engine.utils.Recursos;
 
-import java.io.InputStream;
-import java.net.URL;
-
-import javazoom.jl.decoder.Bitstream;
-import javazoom.jl.decoder.Decoder;
-import javazoom.jl.decoder.Header;
-import javazoom.jl.decoder.SampleBuffer;
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class AndroidAudioPlayer implements AudioPlayer {
 
-    private Decoder mDecoder;
-    private AudioTrack mAudioTrack;
-    public Context context;
+    // atributos
+    private Context context;
+    private int contador = 1;
+    private MediaPlayer playerAtual = null;
+    private MediaPlayer playerProximo = null;
+    private AssetFileDescriptor afd;
 
     public AndroidAudioPlayer(Context context) {
         this.context = context;
+        try {
+            afd = context.getAssets().openFd(Recursos.dirAudio + "01intro.mid");
+            playerAtual = new MediaPlayer();
+            playerAtual.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            playerAtual.prepare();
+            criarProximo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    public void play(){
 
-        final int sampleRate = 44100;
-        final int minBufferSize = AudioTrack.getMinBufferSize(sampleRate,
-                AudioFormat.CHANNEL_OUT_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT);
 
-        mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                sampleRate,
-                AudioFormat.CHANNEL_OUT_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT,
-                minBufferSize,
-                AudioTrack.MODE_STREAM);
 
-        mDecoder = new Decoder();
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InputStream in = context.getAssets().open(Recursos.dirAudio+"sample02.mp3");
-                    Bitstream bitstream = new Bitstream(in);
+    public void criarProximo() {
+        try {
+            playerProximo = new MediaPlayer();
+            playerProximo.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            playerProximo.prepare();
+            playerAtual.setOnCompletionListener(onCompletionListener);
+            playerAtual.setNextMediaPlayer(playerProximo);
 
-                    final int READ_THRESHOLD = 2147483647;
-                    int framesReaded = 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
+            Log.d("Som", "On completation");
+            mediaPlayer.reset();
+            playerAtual = playerProximo;
+            criarProximo();
+        }
+    };
 
-                    Header header;
-                    for (; framesReaded++ <= READ_THRESHOLD && (header = bitstream.readFrame()) != null; ) {
-                        SampleBuffer sampleBuffer = (SampleBuffer) mDecoder.decodeFrame(header, bitstream);
-                        short[] buffer = sampleBuffer.getBuffer();
-                        mAudioTrack.setLoopPoints(0,buffer.length,6);
-                        mAudioTrack.write(buffer, 0, buffer.length);
-
-                        bitstream.closeFrame();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-        mAudioTrack.play();
+    public void play() {
+        playerAtual.start();
     }
 
 }

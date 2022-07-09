@@ -174,6 +174,7 @@ public class App extends ApplicationAdapter {
 		
 		public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 			if(Recursos.ESTADO==EstadoJogo.EXECUTANDO)
+				Recursos.playMenuMusic();
 				SceneManager.iniciarTransicaoCena(Level_01.class.getName(),Tempo.RAPIDO);
 			// Recursos.getInstance().keyState.k_direita = false;
 			// Recursos.getInstance().keyState.k_esquerda = false;

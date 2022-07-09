@@ -5,7 +5,7 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="14"
+8        android:minSdkVersion="16"
 8-->/home/algoldev/Desktop/CÓDIGOS/tileset_mecanica_libGDX/android/AndroidManifest.xml
 9        android:targetSdkVersion="32" />
 9-->/home/algoldev/Desktop/CÓDIGOS/tileset_mecanica_libGDX/android/AndroidManifest.xml
