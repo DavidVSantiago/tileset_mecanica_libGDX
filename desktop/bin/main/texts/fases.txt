@@ -1,0 +1,19 @@
+#menu
+*mensagem x1
+*mensagem x2
+*mensagem x3
+*mensagem x4
+*mensagem x5
+*mensagem x6
+
+#fase1
+*mensagem s1
+*mensagem s2
+*mensagem s3
+
+#fase2
+*mensagem b1
+*mensagem b2
+*mensagem b3
+*mensagem b4
+*mensagem b5

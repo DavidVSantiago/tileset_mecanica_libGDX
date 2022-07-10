@@ -10,22 +10,23 @@ import com.jumpbraid.engine.utils.Scenes.Tempo;
 public class MenuScreen extends SimpleScreen{
     // atributos ----------------------------------------------
     private double tempoPermanencia = Tempo.LENTO.getValue();
-    BitmapFont font = new BitmapFont(true); //or use alex answer to use custom font
 
     // construtor ---------------------------------------------
     public MenuScreen() {
       super(Recursos.carregarImagem(Scenes.Telas.MENU.toString()));
-      font.setColor(1, 0, 0, 1);
+      // define os textos da cena
+      Recursos.textManager.carregarTextosCena("fases.txt", "menu");
+      Recursos.textManager.ativarExibicao(); // para permitir que o 
     }
 
     // métodos de colisão ------------------------------------------------
     @Override
-    public void handlerEvents() {
+    public void doHandlerEvents() {
         
     }
 
     @Override
-    public void update() {
+    public void doUpdate() {
       Recursos.tempoAcumulado += Recursos.tempoDelta;
       if (Recursos.tempoAcumulado >= tempoPermanencia) {
         Recursos.tempoAcumulado = 0L;
@@ -35,12 +36,8 @@ public class MenuScreen extends SimpleScreen{
     }
 
     @Override
-    public void render() {
-      Recursos.batch.draw(img, 0, 0,
-      Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-      0,0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-      false,true);
-      font.draw(Recursos.batch, "Hello World!", 10, 10);
+    public void doRender() {
+      
     }
 
     

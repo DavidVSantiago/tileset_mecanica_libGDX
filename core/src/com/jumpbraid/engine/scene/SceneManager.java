@@ -57,7 +57,6 @@ public class SceneManager implements IGameloop{
     @Override
     public void render() {
         cenaAtual.render();
-        System.out.println(Recursos.getInstance().person.bloqueiaTodoMovimento);
     }
 
     // Métodos de transição -----------------------------------

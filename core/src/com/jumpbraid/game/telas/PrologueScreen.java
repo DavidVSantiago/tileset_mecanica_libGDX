@@ -20,12 +20,12 @@ public class PrologueScreen extends SimpleScreen{
 
     // métodos de colisão ------------------------------------------------
     @Override
-    public void handlerEvents() {
+    public void doHandlerEvents() {
         
     }
 
     @Override
-    public void update() {
+    public void doUpdate() {
       Recursos.tempoAcumulado += Recursos.tempoDelta;
       if (Recursos.tempoAcumulado >= tempoPermanencia) {
         Recursos.tempoAcumulado = 0L;
@@ -35,11 +35,8 @@ public class PrologueScreen extends SimpleScreen{
     }
 
     @Override
-    public void render() {
-      Recursos.batch.draw(img, 0, 0,
-                            Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-                            0,0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-                            false,true);
+    public void doRender() {
+      
     }
 
     

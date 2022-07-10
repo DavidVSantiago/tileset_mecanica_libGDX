@@ -68,7 +68,7 @@ public class App extends ApplicationAdapter {
 		tempoInicio = TimeUtils.nanoTime();
         Recursos.tempoDelta = tempoInicio-tempoFinal;
 
-		sceneManager.update();
+		sceneManager.update(); // atualização nivel 0
 		
 		tempoFinal=tempoInicio;
 		// 02 fim --------------------------------------------------------------
@@ -78,7 +78,7 @@ public class App extends ApplicationAdapter {
 		Recursos.batch.setProjectionMatrix(camera.combined);
 		Recursos.batch.begin(); // inicio --------------------
 		
-		sceneManager.render();
+		sceneManager.render(); // renderização nível 0
 		
 		Recursos.batch.end(); // fim -------------------------
 

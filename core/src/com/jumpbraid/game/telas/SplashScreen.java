@@ -25,12 +25,12 @@ public class SplashScreen extends SimpleScreen{
 
     // métodos de colisão ------------------------------------------------
     @Override
-    public void handlerEvents() {
+    public void doHandlerEvents() {
         
     }
 
     @Override
-    public void update() {
+    public void doUpdate() {
       if (_ativador_01) { // fade in (inicio da tela de splash)
         Recursos.tempoAcumulado += Recursos.tempoDelta;
         float alpha = (float) (Recursos.tempoAcumulado/tempoFadeIn);
@@ -53,10 +53,7 @@ public class SplashScreen extends SimpleScreen{
     }
 
     @Override
-    public void render() {
-      Recursos.batch.draw(img, 0, 0,
-                            Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-                            0,0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA,
-                            false,true);
+    public void doRender() {
+      
     }
 }
