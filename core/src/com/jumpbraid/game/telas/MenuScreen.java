@@ -1,6 +1,5 @@
 package com.jumpbraid.game.telas;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.scene.SimpleScreen;
 import com.jumpbraid.engine.utils.Recursos;
@@ -16,7 +15,9 @@ public class MenuScreen extends SimpleScreen{
       super(Recursos.carregarImagem(Scenes.Telas.MENU.toString()));
       // define os textos da cena
       Recursos.textManager.carregarTextosCena("fases.txt", "menu");
-      Recursos.textManager.ativarExibicao(); // para permitir que o 
+      Recursos.textManager.ativarExibicao(); // para permitir que o texto seja exibido
+      // ativa a renderização de cada um dos textos
+      Recursos.textManager.ativarTexto(0);
     }
 
     // métodos de colisão ------------------------------------------------
@@ -37,7 +38,7 @@ public class MenuScreen extends SimpleScreen{
 
     @Override
     public void doRender() {
-      
+      Recursos.textManager.render(); // renderiza os textos da cena
     }
 
     @Override

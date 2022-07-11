@@ -16,10 +16,14 @@ public class TextManager implements IGameloop {
     private Rect[] caracteres; // arrays com as dimensões de recorte de todos os caracteres de texto
     private final String arquivoFonte = "fontBase01.fnt"; // nome do arquivo com os dados de recorte da fonte
     private final String imagemFonte = "fontBase01.png"; // nome do arquivo da imagem da fonte; 
-    private Texture imagem;
+    public static Texture imagem;
+    public static short posTextoX, posTextoY;
 
     // contrutor ---------------------------------------------------------
-    private TextManager(){}
+    private TextManager(){
+        posTextoX = 0;
+        posTextoY = 0;
+    }
 
     public static TextManager getInstance(){
         if(instance==null)
@@ -46,10 +50,22 @@ public class TextManager implements IGameloop {
         // percorre os ativadores de cada texto individual
         for(short i=0;i<ativadores.length;i++){
             if(!ativadores[i]) continue; // se não for hora de exibir o texto, abandona
-            // exibe o diálogo de texto.
-            textBoxes[i].render();
+            // captura i-ésimo diálogo
+            char[] texto = textBoxes[i].texto;
+            // percorre todos os c-ésimos caracteres do diálogo
+            short desloc=10;
+            for(short c=0;c<texto.length;c++){
+                // obtém as coordenadas de recorte de origem (da imagem do caracter)
+                short sX1 = caracteres[texto[c]].x1;
+                short sY1 = caracteres[texto[c]].y1;
+                short sW = (short)(caracteres[texto[c]].x2-sX1);
+                short sH = (short)(caracteres[texto[c]].y2-sY1);
+                // obtém as coordenadas de posicionamento no destino (na tela)
+                short dX1 = (short)(posTextoX+(sW*c));
+                short dY1 = (short)(posTextoY);
+                Recursos.batch.draw(imagem,dX1,dY1,sW,sH,sX1,sY1,sW,sH,false,true);
+            }
         }
-        
     }
 
     // metodos de ativação -----------------------------------------------
@@ -59,10 +75,10 @@ public class TextManager implements IGameloop {
     public void desativarExibicao(){
         ativadorGlobal=false;
     }
-    public void ativarTexto(short index){
+    public void ativarTexto(int index){
         ativadores[index]=true;
     } 
-    public void desativarTexto(short index){
+    public void desativarTexto(int index){
         ativadores[index]=false;
     }
     public void ativarTodos(){

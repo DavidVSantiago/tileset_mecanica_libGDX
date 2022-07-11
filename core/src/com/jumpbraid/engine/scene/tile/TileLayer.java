@@ -1,6 +1,5 @@
 package com.jumpbraid.engine.scene.tile;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jumpbraid.engine.images.Element;
 import com.jumpbraid.engine.utils.Camera;
 import com.jumpbraid.engine.utils.Recursos;

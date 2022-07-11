@@ -1,7 +1,6 @@
 package com.jumpbraid.engine.person;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.game.IGameloop;
 import com.jumpbraid.engine.scene.SceneManager;

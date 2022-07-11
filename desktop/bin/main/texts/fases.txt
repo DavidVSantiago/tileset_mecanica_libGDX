@@ -1,5 +1,5 @@
 #menu
-*mensagem x1
+*mensagemx1
 *mensagem x2
 *mensagem x3
 *mensagem x4

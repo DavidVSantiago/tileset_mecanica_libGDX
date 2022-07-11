@@ -2,7 +2,6 @@ package com.jumpbraid.game.telas.levels;
 
 import com.jumpbraid.engine.scene.tile.TileLevel;
 import com.jumpbraid.engine.utils.Scenes;
-import com.jumpbraid.engine.utils.Recursos;
 
 public class Level_02 extends TileLevel{
     // atributos -------------------------------------------------------

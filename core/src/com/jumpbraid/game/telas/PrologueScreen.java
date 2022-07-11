@@ -1,7 +1,5 @@
 package com.jumpbraid.game.telas;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.jumpbraid.engine.scene.Scene;
 import com.jumpbraid.engine.scene.SceneManager;
 import com.jumpbraid.engine.scene.SimpleScreen;
 import com.jumpbraid.engine.utils.Recursos;
