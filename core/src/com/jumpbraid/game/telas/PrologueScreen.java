@@ -39,8 +39,9 @@ public class PrologueScreen extends SimpleScreen{
       
     }
 
-    
-
-
+    @Override
+    public void disposeScene(){
+      // colocar os métodos de limpeza da cena
+    }
     
 }

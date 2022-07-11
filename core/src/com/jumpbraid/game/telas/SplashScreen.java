@@ -18,9 +18,6 @@ public class SplashScreen extends SimpleScreen{
       tempoFadeIn = Tempo.MEDIO.getValue();
       tempoPermanencia = Tempo.LENTO.getValue();
       _ativador_01=true;
-      //Recursos.midiPlayer.open("01intro.mid");
-      //Recursos.midiPlayer.setLooping(true);
-      //Recursos.midiPlayer.play();
     }
 
     // métodos de colisão ------------------------------------------------
@@ -34,8 +31,8 @@ public class SplashScreen extends SimpleScreen{
       if (_ativador_01) { // fade in (inicio da tela de splash)
         Recursos.tempoAcumulado += Recursos.tempoDelta;
         float alpha = (float) (Recursos.tempoAcumulado/tempoFadeIn);
-        Color c = Recursos.batch.getColor();
-        Recursos.batch.setColor(new Color(c.r, c.g, c.b, alpha));
+        alpha = alpha>1?1:alpha; // correção para valores maiores que 1
+        SceneManager.overlayPreto.setAlpha(1-alpha);
         if (Recursos.tempoAcumulado >= tempoFadeIn) {
           _ativador_01 = false;
           Recursos.tempoAcumulado = 0L;
@@ -55,5 +52,10 @@ public class SplashScreen extends SimpleScreen{
     @Override
     public void doRender() {
       
+    }
+
+    @Override
+    public void disposeScene(){
+      // colocar os métodos de limpeza da cena
     }
 }

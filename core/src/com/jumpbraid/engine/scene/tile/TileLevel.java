@@ -92,6 +92,11 @@ public abstract class TileLevel extends Scene{
         listaTileLayers[4].render(); // renderiza Layer05-colliders
     }
 
+    // método de limpeza ************************************************
+    @Override
+    public void disposeScene(){
+      // colocar os métodos de limpeza da cena
+    }
 
     // métodos *********************************************************
     private void parseTileLayer(JsonValue jsonLayers) {

@@ -14,12 +14,6 @@ public class BlackScreen extends Scene{
 
     // construtor ---------------------------------------------
     public BlackScreen() {
-        Pixmap pixmap = new Pixmap( 1, 1, Format.RGBA8888 );
-        pixmap.setColor( 0, 1, 0, 1 );
-        pixmap.fillRectangle(0,0,1,1);
-        telaPreta = new Texture(pixmap);
-        pixmap.dispose();
-
     }
 
     // métodos de colisão ------------------------------------------------
@@ -30,12 +24,14 @@ public class BlackScreen extends Scene{
 
     @Override
     public void update() {
-      
     }
 
     @Override
     public void render() {
-        Recursos.batch.draw(telaPreta,100,70);
-        System.out.println("*");
+    }
+
+    @Override
+    public void disposeScene(){
+      // colocar os métodos de limpeza da cena
     }
 }

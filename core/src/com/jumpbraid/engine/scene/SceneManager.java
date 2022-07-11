@@ -1,6 +1,11 @@
 package com.jumpbraid.engine.scene;
 
+import javax.swing.Spring;
+
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.jumpbraid.engine.game.EstadoJogo;
 import com.jumpbraid.engine.game.IGameloop;
 import com.jumpbraid.engine.person.Person;
@@ -11,6 +16,9 @@ import com.jumpbraid.game.telas.SplashScreen;
 
 /** Tem o objetivo de gerenciar as cenas do jogo */
 public class SceneManager implements IGameloop{
+    // atributos do overlay preto de transição
+
+    public static Sprite overlayPreto;
     // atributos ----------------------------------------------
     private static Scene cenaAtual, telaPreta;
     private static double tempoTransicao,tempoTransicaoEstado,tempoFade;
@@ -18,21 +26,27 @@ public class SceneManager implements IGameloop{
     public static boolean _ativador_cena,_ativador_estado,_ativador_cena_fadeOut,_ativador_cena_fadeIn;
     public static boolean _ativador_level_reinicio;
 
-    
     private Scene novaCena = null;
 	public static String nameClassLevelDestino,nameClassTelaDestino;
     private static EstadoJogo NOVO_ESTADO;
     
     // construtor ---------------------------------------------
     public SceneManager(Person person) {
-        telaPreta = new BlackScreen();
+        // inicializaçao do overlay preto para a transição de tela
+        Pixmap pixmap = new Pixmap( Recursos.getInstance().LARGURA_TELA, Recursos.getInstance().ALTURA_TELA, Pixmap.Format.RGBA8888 );
+        pixmap.setColor( 0, 0, 0, 1 );
+        pixmap.fillRectangle(0,0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA);
+        Texture texture = new Texture(pixmap);
+        overlayPreto = new Sprite(texture);
+        //pixmap.dispose();
+        // 
+        telaPreta = new BlackScreen(); // fica sempre carregada durante o gameplay (para auxiliar nas transições)
         cenaAtual = new SplashScreen();
         tempoTransicao = Tempo.MEDIO.getValue();
         tempoFade = Tempo.RAPIDO.getValue();
     }
 
     // métodos gameloop ------------------------------------------------
-    
     @Override
     public void handlerEvents() {
         if(Recursos.ESTADO!=EstadoJogo.CARREGANDO)
@@ -41,8 +55,6 @@ public class SceneManager implements IGameloop{
 
     @Override
     public void update() {
-
-
         // resolve os temporizadores de fadeout da transição
         if(_ativador_cena_fadeOut) temporizadorFadeOut();
         else if(_ativador_cena) temporizadorTransicaoCena();
@@ -57,10 +69,11 @@ public class SceneManager implements IGameloop{
     @Override
     public void render() {
         cenaAtual.render();
+        // desenha o overlay preto das transições
+        overlayPreto.draw(Recursos.batch);
     }
 
     // Métodos de transição -----------------------------------
-    
     public static void iniciarTransicaoCena(String nameClassLevelDestino, Tempo tempoFade){
         SceneManager.tempoFade = tempoFade.getValue();
         SceneManager.nameClassLevelDestino = nameClassLevelDestino;
@@ -77,20 +90,25 @@ public class SceneManager implements IGameloop{
     private void temporizadorFadeOut(){
         Recursos.tempoAcumulado+=Recursos.tempoDelta;
         float alpha = (float)(Recursos.tempoAcumulado/tempoFade);
-        Color c = Recursos.batch.getColor();
-        Recursos.batch.setColor(new Color(c.r, c.g, c.b, 1.0f-alpha));
+        alpha = alpha>1?1:alpha; // correção para valores maiores que 1
+        SceneManager.overlayPreto.setAlpha(alpha);
         if(Recursos.tempoAcumulado>=tempoFade){
             _ativador_cena_fadeOut=false;
             _ativador_cena=true;
             Recursos.tempoAcumulado=0L;
+            // libera os recursos da tela
+            cenaAtual.disposeScene();
+            cenaAtual=null;
+            // muda para a tela de espera (tela preta)
             cenaAtual = telaPreta;
         }
     }
+
     private void temporizadorFadeIn(){
         Recursos.tempoAcumulado+=Recursos.tempoDelta;
         float alpha = (float)(Recursos.tempoAcumulado/tempoFade);
-        Color c = Recursos.batch.getColor();
-        Recursos.batch.setColor(new Color(c.r, c.g, c.b, alpha));
+        alpha = alpha>1?1:alpha; // correção para valores maiores que 1
+        SceneManager.overlayPreto.setAlpha(1-alpha);
         if(Recursos.tempoAcumulado>=tempoFade){
             _ativador_cena_fadeIn=false;
             Recursos.tempoAcumulado=0L;
@@ -101,7 +119,7 @@ public class SceneManager implements IGameloop{
         // se for a primeira execução desse temporizador
         if(Recursos.ESTADO!=EstadoJogo.CARREGANDO){
             Recursos.ESTADO = EstadoJogo.CARREGANDO;
-            try {
+            try { // ja começa a carregar na memória a nova cena
                 novaCena = (Scene) Class.forName(nameClassLevelDestino).getConstructor().newInstance();
             } catch (Exception e) { e.printStackTrace(); }
         }
@@ -115,6 +133,7 @@ public class SceneManager implements IGameloop{
             Recursos.ESTADO =EstadoJogo.EXECUTANDO;
         }
     }
+
     private void temporizadorTransicaoEstado(){
         // se for a primeira execução desse temporizador
         Recursos.tempoAcumulado+=Recursos.tempoDelta;

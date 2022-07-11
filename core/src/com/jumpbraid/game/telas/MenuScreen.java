@@ -40,8 +40,9 @@ public class MenuScreen extends SimpleScreen{
       
     }
 
-    
-
-
+    @Override
+    public void disposeScene(){
+      // colocar os métodos de limpeza da cena
+    }
     
 }

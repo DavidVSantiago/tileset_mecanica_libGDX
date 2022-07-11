@@ -9,4 +9,6 @@ public abstract class Scene implements IGameloop{
     public Scene() {
 
     }
+    // metodos ------------------------------------------------
+    public abstract void disposeScene();
 }
