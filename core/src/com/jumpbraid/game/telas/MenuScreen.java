@@ -23,7 +23,7 @@ public class MenuScreen extends SimpleScreen{
     // métodos de colisão ------------------------------------------------
     @Override
     public void doHandlerEvents() {
-        
+        if(Recu)
     }
 
     @Override
@@ -32,7 +32,7 @@ public class MenuScreen extends SimpleScreen{
       if (Recursos.tempoAcumulado >= tempoPermanencia) {
         Recursos.tempoAcumulado = 0L;
         // fade out da tela de splash
-        SceneManager.iniciarTransicaoCena(PrologueScreen.class.getName(),Tempo.MEDIO);
+        //SceneManager.iniciarTransicaoCena(PrologueScreen.class.getName(),Tempo.MEDIO);
       }
     }
 

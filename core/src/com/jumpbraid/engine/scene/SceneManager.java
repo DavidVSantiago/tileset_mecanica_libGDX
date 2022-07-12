@@ -9,6 +9,7 @@ import com.jumpbraid.engine.person.Person;
 import com.jumpbraid.engine.utils.Recursos;
 import com.jumpbraid.engine.utils.Scenes.Tempo;
 import com.jumpbraid.game.telas.BlackScreen;
+import com.jumpbraid.game.telas.MenuScreen;
 import com.jumpbraid.game.telas.SplashScreen;
 
 /** Tem o objetivo de gerenciar as cenas do jogo */
@@ -31,14 +32,14 @@ public class SceneManager implements IGameloop{
     public SceneManager(Person person) {
         // inicializaçao do overlay preto para a transição de tela
         Pixmap pixmap = new Pixmap( Recursos.getInstance().LARGURA_TELA, Recursos.getInstance().ALTURA_TELA, Pixmap.Format.RGBA8888 );
-        pixmap.setColor( 0, 0, 0, 1 );
+        pixmap.setColor( 0, 0, 0, 0 );
         pixmap.fillRectangle(0,0,Recursos.getInstance().LARGURA_TELA,Recursos.getInstance().ALTURA_TELA);
         Texture texture = new Texture(pixmap);
         overlayPreto = new Sprite(texture);
         //pixmap.dispose();
         // 
         telaPreta = new BlackScreen(); // fica sempre carregada durante o gameplay (para auxiliar nas transições)
-        cenaAtual = new SplashScreen();
+        cenaAtual = new MenuScreen();
         tempoTransicao = Tempo.MEDIO.getValue();
         tempoFade = Tempo.RAPIDO.getValue();
     }

@@ -10,5 +10,5 @@ public abstract class Scene implements IGameloop{
 
     }
     // metodos ------------------------------------------------
-    public abstract void disposeScene();
+    public abstract void disposeScene(); // tem que disposar tods as Textures!
 }

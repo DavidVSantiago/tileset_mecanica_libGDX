@@ -21,7 +21,7 @@ public class Recursos {
 	public int LARGURA_TELA;
 	public int ALTURA_TELA;
 	public Camera camera;
-	public KeyState keyState;
+	public static KeyState keyState;
 	public boolean permiteMoverH,permiteMoverV;
 	public Person person;
 	public int vidas;

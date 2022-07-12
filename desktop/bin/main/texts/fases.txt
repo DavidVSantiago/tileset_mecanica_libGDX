@@ -1,10 +1,12 @@
 #menu
-*mensagemx1
-*mensagem x2
-*mensagem x3
-*mensagem x4
-*mensagem x5
-*mensagem x6
+*START GAME
+*OPTIONS
+*DIFICULT
+*HARD
+*NORMAL
+*EASY
+*QUIT GAME
+*BACK
 
 #fase1
 *mensagem s1
