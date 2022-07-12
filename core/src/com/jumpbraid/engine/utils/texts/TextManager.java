@@ -14,11 +14,9 @@ public class TextManager implements IGameloop {
 
     private static TextManager instance = null;
     // atributos ---------------------------------------------------------
-    private final String imagemFonte = "fontBase01.png"; // nome do arquivo da imagem da fonte; 
-    private final String arquivoFonte = "fontBase01.fnt"; // nome do arquivo com os dados de recorte da fonte
     public static Texture imagem; // imagem do sprite dos caracteres
     private Rect[] caracteres; // arrays com as dimensões de recorte de todos os caracteres de texto
-    private SimpleTextBox[] textBoxes; // quadros dos textos a serem renderizados
+    public SimpleTextBox[] textBoxes; // quadros dos textos a serem renderizados
     private Texture[] textImages; // imagens dos textos a serem renderizados
     private boolean[] ativadores; // para verificar qual texto será renderizado
     private boolean ativadorGlobal; // para verificar se pode exibir texto
@@ -114,14 +112,13 @@ public class TextManager implements IGameloop {
                 //cria cada um dos quadros de texto, atribuindo-lhes os seus respectivos textos
                 textBoxes[i] = new SimpleTextBox(textos[i]);
             }
-            carregarCaracteres();
-            preparaTextBoxes();
+            
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-    private void carregarCaracteres(){
+    public void carregarCaracteres(String arquivoFonte){
         caracteres = new Rect[256]; // inicializa o array para os 256 caracteres da tabela ASCII
         // caregar o arquivo com os dados de recorte de cada caracter
         String[] completo = Recursos.carregarArquivoTexto(arquivoFonte);
