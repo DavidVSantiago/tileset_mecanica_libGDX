@@ -59,26 +59,16 @@ public class TextManager implements IGameloop {
     }
 
     // metodos de ativação -----------------------------------------------
-    public void ativarExibicao(){
-        ativadorGlobal=true;
+    public void setAtivacaoExibicao(boolean value){
+        ativadorGlobal=value;
     }
-    public void desativarExibicao(){
-        ativadorGlobal=false;
-    }
-    public void ativarTexto(int index){
-        ativadores[index]=true;
+    public void setAtivacaoTexto(int index, boolean value){
+        ativadores[index]=value;
     } 
-    public void desativarTexto(int index){
-        ativadores[index]=false;
-    }
-    public void ativarTodos(){
+    public void setAtivacaoTodos(boolean value){
         for(short i=0;i<ativadores.length;i++)
-            ativadores[i]=true;
+            ativadores[i]=value;
     }
-    public void desativarTodos(){
-        for(short i=0;i<ativadores.length;i++)
-            ativadores[i]=false;
-    } 
 
     // metodos ---------------------------------------------------------
         /* recebe um array de textos, para cada um dos diálogos da cena*/

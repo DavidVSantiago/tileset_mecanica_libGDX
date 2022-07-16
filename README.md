@@ -1,1 +1,0 @@
-# tileset_mecanica_libGDX
