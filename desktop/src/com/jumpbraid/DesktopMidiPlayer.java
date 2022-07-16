@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.jumpbraid.engine.audio.MidiPlayer;
 import com.jumpbraid.engine.utils.Recursos;
 
+/* */
 public class DesktopMidiPlayer implements MidiPlayer {
 
 private Sequence sequence;
