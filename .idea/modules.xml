@@ -4,8 +4,15 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tileset_mecanica_libGDX.iml" filepath="$PROJECT_DIR$/.idea/modules/tileset_mecanica_libGDX.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.iml" filepath="$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/android/tileset_mecanica_libGDX.android.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/tileset_mecanica_libGDX.core.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.main.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.test.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/tileset_mecanica_libGDX.desktop.test.iml" />
     </modules>
   </component>
 </project>
